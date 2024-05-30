@@ -3,7 +3,7 @@ import axios from 'axios'
 const baseUrl = "http://127.0.0.1:8000"
 
 export const getToken = ({ auth, username, password }) => {
-    axios.post(`${baseUrl}/token/`, {
+    return axios.post(`${baseUrl}/token/`, {
         username: username,
         password: password
     }).then(response => {
@@ -15,7 +15,7 @@ export const getToken = ({ auth, username, password }) => {
 }
 
 export const fetchUser = ({ auth }) => {
-    axios({
+    return axios({
         method: 'get',
         url: `${baseUrl}/profile/`,
         headers: {
@@ -23,11 +23,42 @@ export const fetchUser = ({ auth }) => {
         }
     }).then(response => {
         console.log('PROFILE: ', response)
+        return response
     }).catch(error => {
         console.log('ERROR: ', error)
     })
 }
 
+
+export const fetchBookshelf = ({ auth }) => {
+    return axios({
+        method: 'get',
+        url: `${baseUrl}/bookshelf/`,
+        headers: {
+            Authorization: `Bearer ${auth.accessToken}`
+        }
+    }).then(response => {
+        console.log('BOOKSHELF: ', response)
+        return response
+    }).catch(error => {
+        console.log('ERROR: ', error)
+    })
+}
+
+export const fetchBooks = ({ auth }) => {
+    return axios({
+        method: 'get',
+        url: `${baseUrl}/books/`,
+        headers: {
+            Authorization: `Bearer ${auth.accessToken}`
+        }
+    }).then(response => {
+        console.log('BOOKS: ', response)
+        return response
+    }).catch(error => {
+        console.log('ERROR: ', error)
+    })
+}
 
 export const createUser = ({ username, password, firstName, lastName }) => {
     axios({
@@ -47,3 +78,18 @@ export const createUser = ({ username, password, firstName, lastName }) => {
     })
   }
   
+  export const createBook = ({ author, genre, title }) => {
+    axios({
+        method: 'post',
+        url: `${baseUrl}/create-book/`,
+        data: {
+            author: author,
+            genre: genre,
+            title: title
+        }
+    }).then(response => {
+        console.log('CREATE BOOK: ', response)
+    }).catch(error => {
+        console.log('ERROR: ', error)
+    })
+  }
