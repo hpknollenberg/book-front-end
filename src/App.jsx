@@ -14,11 +14,12 @@ const CreateNewBook = () => {
 
   const submit = () => {
       createBook({ auth, author, genre, title })
+      
   }
 
   return (
       <div>
-        <h1>Create New Book</h1>
+        <h2>Create New Book</h2>
         <div>
           <div>Author:</div>
           <input
@@ -54,19 +55,41 @@ const CreateNewBook = () => {
 
 
 
-const AddNewBook = () => {
+const AddNewBook = ({toggle, setToggle, setBooks}) => {
   const [author, setAuthor] = useState("")
   const [title, setTitle] = useState("")
   const { auth } = useContext(AuthContext)
   
 
   const submit = () => {
-      addBook({ auth, author, title })
+      // function add() {
+      //   return new Promise(() => {
+          addBook({ auth, author, title })
+          .then(response => {
+            setBooks(response.data.map((book) => {
+              return (
+                <div key={book.id}>
+                  <p>{book.author} - {book.title}</p>
+                </div>
+              )
+            }))})
+        
+
+            // setToggle([...toggle, "0"]))
+      //   })
+      // }
+      
+      // async function tog() {
+        // await add()
+        
+      // }
+
+      // tog()
   }
 
   return (
       <div>
-        <h1>Add Book to Bookshelf</h1>
+        <h2>Add Book to Bookshelf</h2>
         <div>
           <div>Author:</div>
           <input
@@ -93,14 +116,25 @@ const AddNewBook = () => {
 }
 
 
-const RemoveBook = () => {
+const RemoveBook = ({toggle, setToggle}) => {
   const [author, setAuthor] = useState("")
   const [title, setTitle] = useState("")
   const { auth } = useContext(AuthContext)
   
 
   const submit = () => {
-      removeBook({ auth, author, title })
+    function add() {
+      return new Promise(() => {
+        removeBook({ auth, author, title })
+      })
+    }
+    
+    async function tog() {
+      await add().then(setToggle([...toggle, "0"]))
+      
+    }
+
+    tog()
   }
 
   return (
@@ -141,6 +175,7 @@ function App() {
   const [name, setName] = useState("")
   const [books, setBooks] = useState([])
   const [library, setLibrary] = useState([])
+  const [toggle, setToggle] = useState(["0"])
   
   useEffect(() => {
     fetchUser({ auth })
@@ -160,8 +195,8 @@ function App() {
           </div>
         )
       }))
-    })
-  }, [])
+    }).then (console.log("current book list: ", books))
+  }, [toggle])
 
   useEffect(() => {
     fetchLibrary({ auth })
@@ -170,7 +205,7 @@ function App() {
       setLibrary(response.data.map((book) => {
         return (
           <div key={book.id}>
-            <p>{book.author} - {book.title}</p>
+            <p>{book.author} - {book.title} ({book.genre})</p>
           </div>
         )
       }))
@@ -180,20 +215,28 @@ function App() {
  
 
   return (
-    <div className="p-5">
-      <h1>Name: {name}</h1>
+    <div className="p-4">
+      <h1>Hello, {name}!</h1>
       <hr></hr>
-      <h2>Books On My Bookshelf:</h2>
-      <p>{books}</p>
+      <div className="d-flex justify-content-evenly p-4">
+        <div>
+          <h2>Books On Your Bookshelf:</h2>
+          <p>{books}</p>
+        </div>
+        <AddNewBook toggle={toggle} setToggle={setToggle} setBooks={setBooks}/>
+        <RemoveBook toggle={toggle} setToggle={setToggle}/>
+      </div>
       <hr></hr>
-      <CreateNewBook />
+      <div className="d-flex justify-content-evenly p-4">
+        <div>
+          <h2>All Books:</h2>
+          <p>{library}</p>
+        </div>
+        <CreateNewBook />
+      </div>
       <hr></hr>
-      <h2>All Books</h2>
-      <p>{library}</p>
-      <hr></hr>
-      <AddNewBook />
-      <hr></hr>
-      <RemoveBook />
+      
+      
     </div>
   )
 }

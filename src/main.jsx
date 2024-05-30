@@ -65,6 +65,9 @@ const AuthContextProvider = ({ children }) => {
   )
 }
 
+
+
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <AuthContextProvider>
