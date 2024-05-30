@@ -60,6 +60,21 @@ export const fetchBooks = ({ auth }) => {
     })
 }
 
+export const fetchLibrary = ({ auth }) => {
+    return axios({
+        method: 'get',
+        url: `${baseUrl}/library/`,
+        headers: {
+            Authorization: `Bearer ${auth.accessToken}`
+        }
+    }).then(response => {
+        console.log('BOOKS: ', response)
+        return response
+    }).catch(error => {
+        console.log('ERROR: ', error)
+    })
+}
+
 export const createUser = ({ username, password, firstName, lastName }) => {
     axios({
       method: 'post',
@@ -76,12 +91,16 @@ export const createUser = ({ username, password, firstName, lastName }) => {
     .catch(error => {
       console.log('ERROR: ', error)
     })
-  }
+}
+
   
-  export const createBook = ({ author, genre, title }) => {
+export const createBook = ({ auth, author, genre, title }) => {
     axios({
         method: 'post',
         url: `${baseUrl}/create-book/`,
+        headers: {
+            Authorization: `Bearer ${auth.accessToken}`
+        },
         data: {
             author: author,
             genre: genre,
@@ -92,4 +111,43 @@ export const createUser = ({ username, password, firstName, lastName }) => {
     }).catch(error => {
         console.log('ERROR: ', error)
     })
-  }
+}
+
+
+export const addBook = ({ auth, author, title }) => {
+    axios({
+        method: 'put',
+        url: `${baseUrl}/add-book/`,
+        headers: {
+            Authorization: `Bearer ${auth.accessToken}`
+        },
+        data: {
+            author: author,
+            title: title
+        }
+    }).then(response => {
+        console.log('CREATE BOOK: ', response)
+    }).catch(error => {
+        console.log('ERROR: ', error)
+    })
+}
+
+
+
+export const removeBook = ({ auth, author, title }) => {
+    axios({
+        method: 'put',
+        url: `${baseUrl}/remove-book/`,
+        headers: {
+            Authorization: `Bearer ${auth.accessToken}`
+        },
+        data: {
+            author: author,
+            title: title
+        }
+    }).then(response => {
+        console.log('CREATE BOOK: ', response)
+    }).catch(error => {
+        console.log('ERROR: ', error)
+    })
+}
