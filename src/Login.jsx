@@ -1,7 +1,7 @@
 import { useContext, useState } from "react"
 import { AuthContext } from "./authContext"
-import { getToken } from "./api"
-
+import { createUser, getToken } from "./api"
+import { useNavigate } from "react-router-dom"
 
 
 
@@ -11,9 +11,10 @@ const CreateNewUser = () => {
     const [password, setPassword] = useState("")
     const [firstName, setFirstName] = useState("")
     const [lastName, setLastName] = useState("")
+    
 
     const submit = () => {
-        CreateNewUser({ username, password, firstName, lastName })
+        createUser({ username, password, firstName, lastName })
     }
 
     return (
@@ -66,8 +67,11 @@ function Login () {
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
 
+    const navigate = useNavigate()
+
     const submit = () => {
         getToken({ auth, username, password })
+        .then(() => navigate("/"))
     }
 
     return (
