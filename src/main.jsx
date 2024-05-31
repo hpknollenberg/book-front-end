@@ -1,5 +1,5 @@
 import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import ReactDOM from 'react-dom/client'
 import {
   createBrowserRouter,
@@ -51,7 +51,13 @@ const router = createBrowserRouter([
 
 
 const AuthContextProvider = ({ children }) => {
-  const [accessToken, setAccessToken] = useState([])
+  let tempToken = JSON.parse(localStorage.getItem('token'))
+  
+  const [accessToken, setAccessToken] = useState(tempToken ? tempToken : [])
+
+  useEffect(() => {
+    localStorage.setItem("token", JSON.stringify(accessToken))
+  }, [accessToken])
 
   const auth = {
     accessToken,
