@@ -24,7 +24,7 @@ export const addBook = ({ auth, author, title }) => {
 
 
 export const createBook = ({ auth, author, genre, title }) => {
-    axios({
+    return axios({
         method: 'post',
         url: `${baseUrl}/create-book/`,
         headers: {
@@ -37,6 +37,7 @@ export const createBook = ({ auth, author, genre, title }) => {
         }
     }).then(response => {
         console.log('CREATE BOOK: ', response)
+        return response
     }).catch(error => {
         console.log('ERROR: ', error)
     })
@@ -140,7 +141,7 @@ export const getToken = ({ auth, username, password }) => {
 
 
 export const removeBook = ({ auth, author, title }) => {
-    axios({
+    return axios({
         method: 'put',
         url: `${baseUrl}/remove-book/`,
         headers: {
@@ -152,6 +153,7 @@ export const removeBook = ({ auth, author, title }) => {
         }
     }).then(response => {
         console.log('REMOVE BOOK: ', response)
+        return response
     }).catch(error => {
         console.log('ERROR: ', error)
     })
